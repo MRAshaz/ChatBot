@@ -3,14 +3,13 @@ from tkinter.scrolledtext import ScrolledText
 import customtkinter as ctk
 import google.generativeai as genai
 import sys, os, threading
-from API import API
 import pyttsx3
 
 
 class ChatBotApp:
     def __init__(self):
         # Initialize API
-        genai.configure(api_key=API)
+        genai.configure(api_key="Enter your api key") # --> Your gemini api key will go here.
 
         # Initialize instance variables
         self.model = None
