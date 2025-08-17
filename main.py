@@ -3,59 +3,14 @@ from tkinter.scrolledtext import ScrolledText
 import customtkinter as ctk
 import google.generativeai as genai
 import sys, os, threading
+from API import API
 import pyttsx3
 
 
-class LoginWindow:
-    def __init__(self):
-        self._setup_login_window()
-
-    def _setup_login_window(self):
-        ctk.set_appearance_mode("system")
-        ctk.set_default_color_theme("dark-blue")
-
-        self.login = ctk.CTk()
-        self.login.geometry("250x250")
-        self.login.title("Login Window")
-        self._api_key_label()
-        self._get_api_key_btn()
-        self._login_button()
-
-    def _get_api_key_btn(self):
-        self.api_key = ctk.CTkEntry(self.login, width=150, height=25, corner_radius=15)
-        self.api_key.pack(padx=(20, 20), pady=(20, 20))
-
-    def _api_key_label(self):
-        self.label = ctk.CTkLabel(
-            self.login, text="Enter you api key:", width=50, height=25
-        )
-        self.label.pack(padx=(20, 20), pady=(20, 20))
-
-    def _login_button(self):
-        self.login_btn = ctk.CTkButton(
-            self.login,
-            text="Enter",
-            width=35,
-            height=25,
-            corner_radius=20,
-            command=lambda: self._set_api_key(),
-        )
-        self.login_btn.pack(padx=(20, 20), pady=(20, 20))
-
-    def _set_api_key(self):
-        self.API = self.api_key.get()
-        self.login.destroy()
-        main_window = ChatBotApp(self.API)
-        main_window.run()
-
-    def run(self):
-        self.login.mainloop()
-
-
 class ChatBotApp:
-    def __init__(self, api_key):
+    def __init__(self):
         # Initialize API
-        genai.configure(api_key=api_key)
+        genai.configure(api_key=API)
 
         # Initialize instance variables
         self.model = None
@@ -313,11 +268,13 @@ class ChatBotApp:
             text_widget.insert("1.0", f"An error occurred: {e}")
 
     def run(self):
+        """Start the application"""
         self.win.mainloop()
 
 
 def main():
-    app = LoginWindow()
+    """Main function to run the application"""
+    app = ChatBotApp()
     app.run()
 
 
