@@ -3,13 +3,88 @@ from tkinter.scrolledtext import ScrolledText
 import customtkinter as ctk
 import google.generativeai as genai
 import sys, os, threading
+import keyring.errors
 import pyttsx3
+import keyring
+
+
+class SecureStorage:
+    def __init__(self, service_name="ChadBot", username="api_key"):
+        self.service_name = service_name
+        self.username = username
+
+    def save_api_key(self, api_key):
+        keyring.set_password(self.service_name, self.username, api_key)
+
+    def load_api_key(self) -> str | None:
+        return keyring.get_password(self.service_name, self.username)
+
+    def delete_api_key(self):
+        try:
+            keyring.delete_password(self.service_name, self.username)
+        except keyring.errors.PasswordDeleteError:
+            pass
+
+
+class LoginWindow:
+    def __init__(self):
+        self.storage = SecureStorage("ChadBot", "api_key")
+        saved_key = self.storage.load_api_key()
+        if saved_key:
+            main_window = ChatBotApp(saved_key)
+            main_window.run()
+        else:
+            self._setup_login_window()
+
+    def _setup_login_window(self):
+        ctk.set_appearance_mode("system")
+        ctk.set_default_color_theme("dark-blue")
+
+        self.login = ctk.CTk()
+        self.login.geometry("250x250")
+        self.login.title("Login Window")
+        self._api_key_label()
+        self._get_api_key_btn()
+        self._login_button()
+
+    def _get_api_key_btn(self):
+        self.api_key = ctk.CTkEntry(self.login, width=150, height=25, corner_radius=15)
+        self.api_key.pack(padx=(20, 20), pady=(20, 20))
+
+    def _api_key_label(self):
+        self.label = ctk.CTkLabel(
+            self.login, text="Enter you api key:", width=50, height=25
+        )
+        self.label.pack(padx=(20, 20), pady=(20, 20))
+
+    def _login_button(self):
+        self.login_btn = ctk.CTkButton(
+            self.login,
+            text="Enter",
+            width=35,
+            height=25,
+            corner_radius=20,
+            command=lambda: self._set_api_key(),
+        )
+        self.login_btn.pack(padx=(20, 20), pady=(20, 20))
+
+    def _set_api_key(self):
+        self.API = self.api_key.get().strip()
+        if self.API:
+            # Save securely in keyring
+            self.storage.save_api_key(self.API)
+            self.login.destroy()
+            main_window = ChatBotApp(self.API)
+            main_window.run()
+
+    def run(self):
+        self.login.mainloop()
 
 
 class ChatBotApp:
-    def __init__(self):
+    def __init__(self, api_key):
         # Initialize API
-        genai.configure(api_key="Enter your api key") # --> Your gemini api key will go here.
+        genai.configure(api_key=api_key)
 
         # Initialize instance variables
         self.model = None
@@ -101,12 +176,21 @@ class ChatBotApp:
         self.win.bind("<Command-p>", lambda x: self._text_to_speech())
         self.win.bind("<Command-s>", lambda x: self._kill_speech())
 
+    def _reset_api_key(self):
+        storage = SecureStorage("ChadBot", "api_key")
+        storage.delete_api_key()
+        self.win.destroy()
+        LoginWindow().run()
+
     def _setup_menu(self):
         """Setup the menu bar"""
         menubar = tk.Menu(self.win)
         history_menu = tk.Menu(menubar, tearoff=0)
         history_menu.add_command(label="Show history", command=self._show_history)
+        reset_api_key = tk.Menu(menubar, tearoff=0)
+        reset_api_key.add_command(label="Change API key", command=self._reset_api_key)
         menubar.add_cascade(label="History", menu=history_menu)
+        menubar.add_cascade(label="Change API key", menu=reset_api_key)
         self.win.config(menu=menubar)
 
     def _initialize_model(self):
@@ -267,13 +351,11 @@ class ChatBotApp:
             text_widget.insert("1.0", f"An error occurred: {e}")
 
     def run(self):
-        """Start the application"""
         self.win.mainloop()
 
 
 def main():
-    """Main function to run the application"""
-    app = ChatBotApp()
+    app = LoginWindow()
     app.run()
 
 
