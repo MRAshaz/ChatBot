@@ -15,24 +15,24 @@ It provides a simple yet powerful chat interface, secure API key management, and
 
 🧩 Tech Stack
 Component	Library / Tool
-GUI	tkinter, customtkinter
-AI Backend	google-generativeai (Gemini)
-Speech	pyttsx3
-Security	keyring
-Threading	threading
-Platform	Python 3.10+ (cross-platform)
+1) GUI	tkinter, customtkinter
+2) AI Backend	google-generativeai (Gemini)
+3) Speech	pyttsx3
+4) Security	keyring
+5) Threading	threading
+6) Platform	Python 3.10+ (cross-platform)
 
 🛠️ Installation
 1. Clone the Repository
 "git clone https://github.com/your-username/ChadBot.git
 cd ChadBot"
 
-2. Create a Virtual Environment (optional but recommended)
-"python -m venv venv
-source venv/bin/activate      # On macOS/Linux
+3. Create a Virtual Environment (optional but recommended)\n
+"python -m venv venv\n
+source venv/bin/activate      # On macOS/Linu\n
 venv\Scripts\activate         # On Windows"
 
-3. Install Dependencies
+4. Install Dependencies
 "pip install -r requirements.txt"
 
 🔑 Setting Up the API Key
