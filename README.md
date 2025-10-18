@@ -24,14 +24,13 @@ Component	Library / Tool
 
 🛠️ Installation
 1. Clone the Repository
-"git clone https://github.com/your-username/ChadBot.git
+"git clone https://github.com/your-username/ChadBot.git"
+"cd ChadBot"
 
-cd ChadBot"
-
-3. Create a Virtual Environment (optional but recommended)\n
-"python -m venv venv\n
-source venv/bin/activate      # On macOS/Linu\n
-venv\Scripts\activate         # On Windows"
+3. Create a Virtual Environment (optional but recommended)
+"python -m venv venv"
+"source venv/bin/activate      # On macOS/Linux
+"venv\Scripts\activate         # On Windows"
 
 4. Install Dependencies
 "pip install -r requirements.txt"
