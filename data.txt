@@ -1,8 +1,1 @@
-You: hello
-You: hello
-Bot: Hello! How can I help you today?
-You: hello
-Bot: Hello! How can I help you today?
-You: hello
-You: hello
-Bot: Hello there! How can I help you today?
+
