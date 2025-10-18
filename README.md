@@ -24,7 +24,7 @@ Component	Library / Tool
 
 🛠️ Installation
 1. Clone the Repository
-"git clone https://github.com/your-username/ChadBot.git"
+"git clone https://github.com/MRAshaz/ChatBot.git"
 "cd ChadBot"
 
 3. Create a Virtual Environment (optional but recommended)
